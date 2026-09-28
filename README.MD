@@ -1,137 +1,79 @@
-# Análisis de Customer Loyalty y Flight Activity
+# Actividad de vuelos y programa de fidelización de una aerolínea
 
-## Descripción del proyecto
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white) ![Pandas](https://img.shields.io/badge/pandas-150458?logo=pandas&logoColor=white) ![NumPy](https://img.shields.io/badge/NumPy-013243?logo=numpy&logoColor=white) ![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C) ![Seaborn](https://img.shields.io/badge/Seaborn-4C72B0) ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?logo=jupyter&logoColor=white)
 
-Este proyecto analiza la actividad de vuelos y la información del programa de fidelización de clientes. Se ha desarrollado como parte de la evaluación final del Módulo 3 del Bootcamp de Data Analytics & IA de Adalab.
+Prueba técnica individual del módulo 3 del **Bootcamp de Data Analytics & IA de Adalab**: dos CSV, un enunciado con preguntas y 48 horas para entregarlo.
 
-El objetivo principal es aplicar un flujo completo de trabajo en análisis de datos, que incluye:
+![Vuelos reservados por mes](assets/vuelos_reservados_por_mes.png)
 
-- Preparación y validación de datos.
-- Exploración estructurada (EDA).
-- Limpieza y transformación.
-- Análisis estadístico descriptivo.
-- Visualización de resultados.
-- Evaluación de posibles diferencias en el comportamiento de reserva de vuelos según el nivel educativo.
+---
 
-Durante todo el proceso se han documentado las decisiones tomadas y se han añadido interpretaciones en lenguaje natural.
+## Resumen del proyecto
+
+- **Pregunta:** ¿cómo se comportan los clientes del programa de fidelización de una aerolínea y hay diferencias en sus reservas según su nivel educativo?
+- **Datos:** actividad mensual de vuelos (405.624 filas) y datos del programa de fidelización (16.737 clientes), 2017–2018.
+- **Qué hice:** todo el proyecto, de forma individual. Validación de claves, eliminación de 1.864 duplicados exactos y consolidación cliente-año-mes (401.688 registros); unión de los dos datasets; EDA; limpieza de salarios (negativos corregidos y nulos imputados con la mediana por nivel educativo); correlaciones de Spearman y gráficos.
+- **Resultados:** las reservas suben en verano y tocan techo en julio; la distancia volada y los puntos acumulados van casi a la par (Spearman 0,998); el número de vuelos reservados apenas cambia con el nivel educativo (media de 4,13 a 4,23 al mes).
+- **Limitaciones:** ejercicio con tiempo cerrado y análisis descriptivo, sin modelado.
+
+---
+
+## Gráficos
+
+### Distancia volada y puntos acumulados
+
+![Distancia frente a puntos acumulados](assets/relacion_distancia_puntos_acumulados.png)
+
+### Vuelos reservados según nivel educativo
+
+![Vuelos reservados por nivel educativo](assets/reservas_por_nivel_educativo.png)
+
+La mediana es de 1 vuelo al mes en todos los niveles educativos y la distribución es casi idéntica: el nivel educativo no marca diferencias en las reservas.
+
+---
+
+## Flujo de trabajo
+
+| Notebook | Qué hace |
+|---|---|
+| [`01_preparacion_y_merge.ipynb`](notebooks/01_preparacion_y_merge.ipynb) | Validación de claves, duplicados, consolidación cliente-año-mes y unión de los datasets |
+| [`02_EDA.ipynb`](notebooks/02_EDA.ipynb) | Estructura, nulos, valores atípicos (IQR) y coherencia de variables |
+| [`03_limpieza.ipynb`](notebooks/03_limpieza.ipynb) | Nombres en snake_case, variable `cancelled`, tratamiento de `salary`, variables constantes |
+| [`04_analisis.ipynb`](notebooks/04_analisis.ipynb) | Estadística descriptiva, correlación de Spearman, gráficos y respuesta a las preguntas del enunciado |
 
 ---
 
 ## Estructura del repositorio
 
 ```text
-bda-modulo-3-evaluacion-final-nieves-sanchez/
-│
+.
+├── README.md
+├── assets/                 # gráficos generados en los notebooks
 ├── data/
-│ ├── raw/
-│ │ ├── Customer Flight Activity.csv
-│ │ └── Customer Loyalty History.csv
-│ │
-│ └── processed/
-│ ├── dataset_unido.csv
-│ └── cleaned_customer_loyalty_flights.csv
-│
-├── notebooks/
-│ ├── 01_preparacion_y_merge.ipynb
-│ ├── 02_EDA.ipynb
-│ ├── 03_limpieza.ipynb
-│ └── 04_analisis.ipynb
-│
-└── README.md
+│   ├── raw/                # CSV originales
+│   └── processed/          # dataset unido y dataset limpio
+└── notebooks/              # 01 → 04
 ```
 
 ---
 
-## Flujo de trabajo
+## Cómo reproducirlo
 
-### 1. Preparación y unión de datos
+```bash
+git clone https://github.com/nieves-sanchez/bda-modulo-3-evaluacion-final-nieves-sanchez.git
+cd bda-modulo-3-evaluacion-final-nieves-sanchez
+pip install pandas numpy matplotlib seaborn jupyter
+jupyter notebook notebooks/
+```
 
-Notebook: `01_preparacion_y_merge.ipynb`
-
-- Validación de claves.
-- Detección y eliminación de duplicados exactos.
-- Consolidación a nivel cliente–año–mes.
-- Unión de los datasets de actividad y fidelización.
-- Exportación del dataset unido.
-
----
-
-### 2. Análisis exploratorio (EDA)
-
-Notebook: `02_EDA.ipynb`
-
-- Revisión de estructura del dataset y tipos de datos.
-- Análisis de valores nulos (conteo y porcentaje).
-- Exploración de la variable `salary` (resumen estadístico, valores negativos y distribución).
-- Detección preliminar de valores atípicos en variables numéricas mediante el método IQR.
-- Revisión de variables categóricas (frecuencias y coherencia de categorías).
-- Validaciones de coherencia en variables numéricas (rangos, valores negativos e inconsistencias).
+Ejecuta los notebooks en orden (01 → 04). Los CSV procesados ocupan unos 105 MB.
 
 ---
 
-### 3. Limpieza de datos
+## Autora
 
-Notebook: `03_limpieza.ipynb`
+**Nieves Sánchez**
 
-Decisiones tomadas tras el EDA:
-
-- Normalización de nombres de columnas (snake_case).
-- Creación de la variable booleana `cancelled`.
-- Tratamiento de `salary`:
-  - Corrección de valores negativos.
-  - Imputación mediante la mediana por nivel educativo.
-- Eliminación de variables constantes.
-- Aplicación de `strip()` en variables categóricas.
-- Exportación del dataset limpio final.
-
-Dataset final:
-`cleaned_customer_loyalty_flights.csv`
-
----
-
-### 4. Análisis estadístico y visualización
-
-Notebook: `04_analisis.ipynb`
-
-Incluye:
-
-- Estadísticas descriptivas (media, mediana, desviación estándar).
-- Detección de valores atípicos (IQR) con apoyo visual (boxplots).
-- Análisis de correlación entre variables numéricas mediante Spearman (más robusto ante outliers).
-- Distribución de variables categóricas.
-- Visualizaciones para responder a las preguntas del enunciado:
-  - Vuelos reservados por mes.
-  - Relación entre distancia y puntos acumulados.
-  - Distribución de clientes por provincia.
-  - Salario promedio por nivel educativo.
-  - Proporción por tipo de tarjeta.
-  - Distribución por estado civil y género.
-- Evaluación descriptiva de `flights_booked` según `education`.
-
----
-
-## Tecnologías utilizadas
-
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- Seaborn
-- Jupyter Notebook
-
----
-
-## Atribución académica
-
-Este proyecto ha sido desarrollado por:
-
-Nieves Sánchez
-
-Como parte de la evaluación final del Módulo 3 del Bootcamp de Data Analytics & IA de Adalab.
-
-Repositorio con fines académicos y de portfolio profesional.
-
-## Contacto
-
-- [LinkedIn](https://www.linkedin.com/in/nieves-sanchez-data)
-- [GitHub](https://github.com/nieves-sanchez)
+[![GitHub](https://img.shields.io/badge/GitHub-Perfil-black?logo=github&logoColor=white)](https://github.com/nieves-sanchez)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Perfil-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/nieves-sanchez-data)
+[![Email](https://img.shields.io/badge/Email-Escr%C3%ADbeme-EA4335?logo=gmail&logoColor=white)](mailto:nsanchezgarcia86@gmail.com)
