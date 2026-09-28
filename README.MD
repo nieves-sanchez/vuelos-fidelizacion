@@ -60,8 +60,8 @@ La mediana es de 1 vuelo al mes en todos los niveles educativos y la distribuci√
 ## C√≥mo reproducirlo
 
 ```bash
-git clone https://github.com/nieves-sanchez/bda-modulo-3-evaluacion-final-nieves-sanchez.git
-cd bda-modulo-3-evaluacion-final-nieves-sanchez
+git clone https://github.com/nieves-sanchez/vuelos-fidelizacion.git
+cd vuelos-fidelizacion
 pip install pandas numpy matplotlib seaborn jupyter
 jupyter notebook notebooks/
 ```
